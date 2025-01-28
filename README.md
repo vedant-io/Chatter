@@ -36,8 +36,8 @@ A feature-rich chat application designed for seamless communication. It leverage
 1. Clone the repository:
 
    ```bash
-   git clone <repository-url>
-   cd <repository-folder>
+   git clone https://github.com/vedant-io/Chatter.git
+   cd Chatter
    ```
 
 2. Install dependencies:
