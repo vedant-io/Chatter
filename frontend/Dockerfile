@@ -1,21 +1,19 @@
-# Use an official Node.js runtime as a parent image
-FROM node:20-alpine
-
-# Set the working directory in the container
+# Stage 1: Build
+FROM node:20-alpine AS build
 WORKDIR /usr/src/app
-
-# Copy package.json and package-lock.json to leverage Docker cache
 COPY package*.json ./
-
-# Install app dependencies
 RUN npm install
-
-# Copy the rest of the application's source code
 COPY . .
+# These are build-time env vars for Vite
+ARG VITE_API_URL
+ARG VITE_SOCKET_URL
+ENV VITE_API_URL=$VITE_API_URL
+ENV VITE_SOCKET_URL=$VITE_SOCKET_URL
+RUN npm run build
 
-# Make port 5173 available to the world outside this container
-EXPOSE 5173
-
-# Define the command to run your app
-CMD ["npm", "run", "dev", "--", "--host"]
-
+# Stage 2: Serve
+FROM nginx:alpine
+COPY --from=build /usr/src/app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
