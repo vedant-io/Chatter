@@ -24,11 +24,15 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      // and requests from allowed origins.
       if (!origin || allowedOrigins.includes(origin)) {
         return callback(null, true);
       }
-
-      callback(new Error("Not allowed by CORS"));
+      
+      // Instead of throwing an error which crashes the server,
+      // we pass false to reject the origin gracefully.
+      callback(null, false);
     },
     credentials: true,
   }),

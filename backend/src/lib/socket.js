@@ -14,8 +14,10 @@ const io = new Server(server, {
       if (!origin || allowedOrigins.includes(origin)) {
         return callback(null, true);
       }
-      callback(new Error("Not allowed by CORS"));
+      callback(null, false);
     },
+    methods: ["GET", "POST"],
+    credentials: true,
   },
 });
 
