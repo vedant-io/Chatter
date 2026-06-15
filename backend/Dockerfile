@@ -4,19 +4,20 @@ FROM node:20-alpine
 # Set the working directory in the container
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json to leverage Docker cache
+# Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Install app dependencies
-# Use --only=production in a real production environment
-RUN npm install
+# Install production dependencies
+RUN npm ci --omit=dev
 
 # Copy the rest of the application's source code
 COPY . .
 
-# Make port 5000 available to the world outside this container
+# Ensure the app runs in production mode
+ENV NODE_ENV=production
+
+# Make port 5000 available
 EXPOSE 5000
 
-# Define the command to run your app
-# For production, it's better to use a script that runs "node ./src/index.js"
-CMD ["npm", "run", "dev"]
+# Run the app
+CMD ["node", "src/index.js"]
