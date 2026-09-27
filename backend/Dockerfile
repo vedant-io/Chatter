@@ -16,8 +16,8 @@ COPY . .
 # Ensure the app runs in production mode
 ENV NODE_ENV=production
 
-# Make port 5000 available
-EXPOSE 5000
+# Make port 4000 available
+EXPOSE 4000
 
 # Run the app
 CMD ["node", "src/index.js"]

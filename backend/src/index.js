@@ -21,23 +21,12 @@ const allowedOrigins =
 
 app.use(express.json({ limit: "2mb" }));
 app.use(cookieParser());
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps or curl requests)
-      // and requests from allowed origins.
-      if (!origin || allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-      
-      // Instead of throwing an error which crashes the server,
-      // we pass false to reject the origin gracefully.
-      callback(null, false);
-    },
-    credentials: true,
-  }),
-);
+app.use(cors({
+  origin: true, // Echoes back the request origin dynamically
+  credentials: true
+}));
 
+app.options("*", cors());
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 

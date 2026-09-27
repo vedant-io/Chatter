@@ -4,7 +4,9 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
 COPY . .
+
 # These are build-time env vars for Vite
+
 ARG VITE_API_URL
 ARG VITE_SOCKET_URL
 ENV VITE_API_URL=$VITE_API_URL
